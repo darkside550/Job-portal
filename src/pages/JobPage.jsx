@@ -102,7 +102,6 @@ const JobPage = () => {
       )}
 
       {loadingHiringStatus && <BarLoader width={"100%"} color='#36d7b7' />}
-      {console.log(job?.recruiter_id)}
       {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
         <div className='flex flex-col gap-2'>
           <h2 className='font-bold mb-4 text-xl ml-1'>Applications</h2>
