@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getSingleJob, updateHiringStatus } from "@/api/apiJobs";
 import useFetch from "@/hooks/useFetch";
 // import ApplicationCard from "@/components/application-card";
-// import { ApplyJobDrawer } from "@/components/apply-job";
+import { ApplyJobDrawer } from "@/components/ApplyJobDrawer";
 import {
   Select,
   SelectContent,
@@ -46,7 +46,7 @@ const JobPage = () => {
   }
 
   return (
-    <div>
+    <div className='flex flex-col gap-8 mt-5'>
       <div className='flex flex-col-reverse gap-6 md:flex-row justify-between items-center'>
         <h1 className='gradient-title font-extrabold pb-3 text-4xl sm:text-6xl'>{job?.title}</h1>
         <img src={job?.company?.logo_url} className='h-12' alt={job?.title} />
@@ -94,6 +94,15 @@ const JobPage = () => {
       <h2 className='text-2xl sm:text-3xl font-bold'>What we are looking for</h2>
 
       <MDEditor.Markdown source={job?.requirements} className='bg-transparent sm:text-lg' />
+
+      {job?.recruiter_id !== user?.id && (
+        <ApplyJobDrawer
+          job={job}
+          user={user}
+          fetchJob={fnJob}
+          applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
+        />
+      )}
     </div>
   );
 };
