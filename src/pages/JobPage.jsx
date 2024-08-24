@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getSingleJob, updateHiringStatus } from "@/api/apiJobs";
 import useFetch from "@/hooks/useFetch";
-// import ApplicationCard from "@/components/application-card";
+import ApplicationCard from "@/components/ApplicationCard";
 import { ApplyJobDrawer } from "@/components/ApplyJobDrawer";
 import {
   Select,
@@ -51,7 +51,6 @@ const JobPage = () => {
         <h1 className='gradient-title font-extrabold pb-3 text-4xl sm:text-6xl'>{job?.title}</h1>
         <img src={job?.company?.logo_url} className='h-12' alt={job?.title} />
       </div>
-
       <div className='flex justify-between '>
         <div className='flex gap-2'>
           <MapPinIcon /> {job?.location}
@@ -73,7 +72,6 @@ const JobPage = () => {
       </div>
 
       {loadingHiringStatus && <BarLoader className='mb-4' width={"100%"} color='#36d7b7' />}
-
       {job?.recruiter_id === user?.id && (
         <Select onValueChange={handleStatusChange}>
           <SelectTrigger className={`w-full ${job?.isOpen ? "bg-green-950" : "bg-red-950"}`}>
@@ -90,7 +88,6 @@ const JobPage = () => {
 
       <h2 className='text-2xl sm:text-3xl font-bold'>About the job</h2>
       <p className='sm:text-lg'>{job?.description}</p>
-
       <h2 className='text-2xl sm:text-3xl font-bold'>What we are looking for</h2>
 
       <MDEditor.Markdown source={job?.requirements} className='bg-transparent sm:text-lg' />
@@ -102,6 +99,17 @@ const JobPage = () => {
           fetchJob={fnJob}
           applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
         />
+      )}
+
+      {loadingHiringStatus && <BarLoader width={"100%"} color='#36d7b7' />}
+      {console.log(job?.recruiter_id)}
+      {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
+        <div className='flex flex-col gap-2'>
+          <h2 className='font-bold mb-4 text-xl ml-1'>Applications</h2>
+          {job?.applications.map((application) => {
+            return <ApplicationCard key={application.id} application={application} />;
+          })}
+        </div>
       )}
     </div>
   );
