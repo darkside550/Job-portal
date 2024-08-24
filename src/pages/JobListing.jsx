@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
 import { State } from "country-state-city";
 import { useUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BarLoader } from "react-spinners";
 import {
   Select,
@@ -23,6 +23,7 @@ const JobListing = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState("");
   const [company_id, setCompany_id] = useState("");
+  const searchInputRef = useRef(null);
 
   const {
     fn: fnJobs,
@@ -61,6 +62,9 @@ const JobListing = () => {
     setSearchQuery("");
     setCompany_id("");
     setLocation("");
+    if (searchInputRef.current) {
+      searchInputRef.current.value = "";
+    }
   };
 
   if (!isLoaded) {
@@ -79,6 +83,7 @@ const JobListing = () => {
           placeholder='Search Jobs by Title..'
           name='search-query'
           className='h-full flex-1  px-4 text-md'
+          ref={searchInputRef}
         />
         <Button type='submit' className='h-full sm:w-28' variant='blue'>
           Search
